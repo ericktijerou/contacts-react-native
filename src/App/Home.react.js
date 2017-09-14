@@ -5,6 +5,8 @@ import { TabViewAnimated, TabBar, SceneMap, TabViewPage } from 'react-native-tab
 import routes from '../routes';
 
 import Container from '../Container';
+import UserList from '../User/UserList.react';
+
 // components
 import {
     ActionButton,
@@ -22,6 +24,8 @@ const propTypes = {
 const contextTypes = {
     uiTheme: PropTypes.object.isRequired,
 };
+
+const FirstRoute = () => <UserList />;
 
 class Home extends Component {
     constructor(props) {
@@ -114,18 +118,11 @@ class Home extends Component {
     _handleIndexChange = index => this.setState({ index });
 
 
-    _renderScene = ({ route }) => {
-      switch (route.key) {
-      case '1':
-        return routes.maleList.renderAll;
-      case '2':
-        return <View style={{ flex: 1, backgroundColor: '#673ab7' }} />;
-      default:
-        return null;
-      }
-    };
+    _renderScene = SceneMap({
+       '1': FirstRoute,
+       '2': FirstRoute,
+     });
 
-    _renderPage = (props) => <TabViewPage {...props} renderScene={this._renderScene} />;
 
     render() {
         const { palette } = this.context.uiTheme;
@@ -134,7 +131,7 @@ class Home extends Component {
                 {this.renderToolbar()}
                 <TabViewAnimated
                   navigationState={this.state}
-                  renderScene={this._renderPage}
+                  renderScene={this._renderScene}
                   renderHeader={props => <TabBar {...props} style={{ backgroundColor: palette.primaryColor}} indicatorStyle={{ backgroundColor: '#fff'}}/>}
                   onIndexChange={this._handleIndexChange}
                 />

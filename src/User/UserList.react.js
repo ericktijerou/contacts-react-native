@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View, Text, FlatList, ActivityIndicator } from "react-native";
 import { List, ListItem, SearchBar } from "react-native-elements";
 
-class MaleList extends Component {
+class UserList extends Component {
   constructor(props) {
     super(props);
 
@@ -22,7 +22,7 @@ class MaleList extends Component {
 
   makeRemoteRequest = () => {
     const { page, seed } = this.state;
-    const url = `https://randomuser.me/api/?seed=${seed}&page=${page}&results=20`;
+    const url = 'https://randomuser.me/api/?results=10&nat=us';
     this.setState({ loading: true });
 
     fetch(url)
@@ -117,16 +117,13 @@ class MaleList extends Component {
           )}
           keyExtractor={item => item.email}
           ItemSeparatorComponent={this.renderSeparator}
-          ListHeaderComponent={this.renderHeader}
           ListFooterComponent={this.renderFooter}
           onRefresh={this.handleRefresh}
           refreshing={this.state.refreshing}
-          onEndReached={this.handleLoadMore}
-          onEndReachedThreshold={50}
         />
       </List>
     );
   }
 }
 
-export default MaleList;
+export default UserList;
