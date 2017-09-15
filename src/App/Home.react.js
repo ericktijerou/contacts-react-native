@@ -25,7 +25,7 @@ const contextTypes = {
     uiTheme: PropTypes.object.isRequired,
 };
 
-const FirstRoute = () => <UserList />;
+const FirstRoute = () => <UserList style={styles.container}/>;
 
 class Home extends Component {
     constructor(props) {

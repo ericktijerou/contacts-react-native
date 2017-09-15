@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { View, Text, FlatList, ActivityIndicator } from "react-native";
-import { List, ListItem, SearchBar } from "react-native-elements";
+import { View, Text, FlatList, ActivityIndicator, StyleSheet, RefreshControl } from "react-native";
+import { List, SearchBar } from "react-native-elements";
+import { ListItem } from 'react-native-material-ui/src';
 
 class UserList extends Component {
   constructor(props) {
@@ -77,10 +78,6 @@ class UserList extends Component {
     );
   };
 
-  renderHeader = () => {
-    return <SearchBar placeholder="Type Here..." lightTheme round />;
-  };
-
   renderFooter = () => {
     if (!this.state.loading) return null;
 
@@ -97,33 +94,45 @@ class UserList extends Component {
     );
   };
 
-  renderAll = () => {
-
-  };
+  capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
 
   render() {
     return (
-      <List containerStyle={{ borderTopWidth: 0, borderBottomWidth: 0 }}>
+      <List style={styles.container} containerStyle={{ borderTopWidth: 0, borderBottomWidth: 0 }}>
         <FlatList
           data={this.state.data}
           renderItem={({ item }) => (
             <ListItem
-              roundAvatar
-              title={`${item.name.first} ${item.name.last}`}
-              subtitle={item.email}
-              avatar={{ uri: item.picture.thumbnail }}
-              containerStyle={{ borderBottomWidth: 0 }}
+                leftElement="person"
+                onPress={() => {}}
+                centerElement={{
+                    primaryText: this.capitalizeFirstLetter(`${item.name.first}`) + ` `+ this.capitalizeFirstLetter(`${item.name.last}`),
+                    secondaryText: `${item.login.username}`,
+                }}
             />
           )}
           keyExtractor={item => item.email}
           ItemSeparatorComponent={this.renderSeparator}
           ListFooterComponent={this.renderFooter}
-          onRefresh={this.handleRefresh}
-          refreshing={this.state.refreshing}
+          refreshControl={
+            <RefreshControl
+              onRefresh={this.handleRefresh}
+              refreshing={this.state.refreshing}
+              colors={["green", "gold", "red", "blue"]}
+            />
+          }
         />
       </List>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
 
 export default UserList;
