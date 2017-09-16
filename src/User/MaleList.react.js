@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from "react";
 import { View, Text, FlatList, ActivityIndicator, StyleSheet, RefreshControl, Alert } from "react-native";
 import { List, SearchBar, Avatar } from "react-native-elements";
-import { ListItem } from 'react-native-material-ui';
+import { ListItem } from '../react-native-material-ui/src';
 import routes from '../routes';
+import UserDetail from '../UserDetail';
 
 const propTypes = {
     navigator: PropTypes.object.isRequired,
@@ -105,9 +106,17 @@ class MaleList extends Component {
     Alert.alert( this.capitalizeFirstLetter(`${item.name.first}:`), 'Hello! Take a look at my profile.', [{text: 'OK', onPress: () => console.log('OK Pressed')}], { cancelable: false } )
   };
 
+  onItemPressed = (item) => {
+      this.props.navigator.push({
+          title: 'Details',
+          Page: UserDetail,
+          user: item,
+      })
+  };
+
   capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
-  }
+  };
 
   render() {
     return (
@@ -131,7 +140,7 @@ class MaleList extends Component {
                 />
               }
               onLeftElementPress={() => this.onAvatarPressed(item)}
-              onPress={() => this.props.navigator.push(routes.userDetail)}
+              onPress={() => this.onItemPressed(item)}
             />
           )}
           keyExtractor={item => item.email}

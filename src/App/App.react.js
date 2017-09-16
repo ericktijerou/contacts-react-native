@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { NativeModules, StatusBar, View } from 'react-native';
 import { Navigator } from 'react-native-deprecated-custom-components';
 
-import { COLOR, ThemeProvider } from 'react-native-material-ui';
+import { COLOR, ThemeProvider } from '../react-native-material-ui';
 import routes from '../routes';
 import Container from '../Container';
 
@@ -11,7 +11,7 @@ const UIManager = NativeModules.UIManager;
 const uiTheme = {
     palette: {
         primaryColor: COLOR.teal800,
-        accentColor: COLOR.lightGreen500,
+        accentColor: COLOR.green500,
     },
 };
 
@@ -22,8 +22,8 @@ class App extends Component {
     static renderScene(route, navigator) {
         return (
             <Container>
-                <StatusBar backgroundColor= "#004d40" translucent />
-                <View style={{ backgroundColor: COLOR.green500, height: 24 }} />
+                <StatusBar backgroundColor= {COLOR.teal900} translucent />
+                <View style={{ backgroundColor: COLOR.teal800, height: 24 }} />
                 <route.Page
                     route={route}
                     navigator={navigator}

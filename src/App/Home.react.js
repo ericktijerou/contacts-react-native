@@ -15,7 +15,7 @@ import {
     ListItem,
     Toolbar,
     Icon,
-} from 'react-native-material-ui';
+} from '../react-native-material-ui/src';
 
 const propTypes = {
     navigator: PropTypes.object.isRequired,
@@ -39,7 +39,6 @@ class Home extends Component {
               { key: '1', title: 'Male' },
               { key: '2', title: 'Female' },
             ],
-            selected: [],
             searchText: '',
             toolbarHidden: false,
             active: 'people',
@@ -64,35 +63,15 @@ class Home extends Component {
         }).start();
     }
     renderToolbar = () => {
-        if (this.state.selected.length > 0) {
-            return (
-                <Toolbar
-                    key="toolbar"
-                    leftElement="clear"
-                    onLeftElementPress={() => this.setState({ selected: [] })}
-                    centerElement={this.state.selected.length.toString()}
-                    rightElement={['delete']}
-                    style={{
-                        container: { backgroundColor: 'white' },
-                        titleText: { color: 'rgba(0,0,0,.87)' },
-                        leftElement: { color: 'rgba(0,0,0,.54)' },
-                        rightElement: { color: 'rgba(0,0,0,.54)' },
-                    }}
-                />
-            );
-        }
         return (
             <Toolbar
                 key="toolbar"
                 leftElement="menu"
+                rightElement={{
+                    menu: { labels: ['Item 1', 'Item 2'] },
+                }}
                 onLeftElementPress={() => this.props.navigator.pop()}
                 centerElement={this.props.route.title}
-                searchable={{
-                    autoFocus: true,
-                    placeholder: 'Search',
-                    onChangeText: value => this.setState({ searchText: value }),
-                    onSearchClosed: () => this.setState({ searchText: '' }),
-                }}
                 style={{
                     container: { elevation:0 },
                 }}
@@ -134,6 +113,9 @@ class Home extends Component {
                         if (Platform.OS === 'android') {
                             ToastAndroid.show(action, ToastAndroid.SHORT);
                         }
+                    }}
+                    style= {{
+                        container: { elevation: 10 },
                     }}
                 />
             </Container>

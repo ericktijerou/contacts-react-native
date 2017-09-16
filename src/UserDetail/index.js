@@ -1,7 +1,7 @@
-import { View, StyleSheet, Text, BackHandler } from 'react-native';
+import { View, StyleSheet, Text, BackHandler, ScrollView } from 'react-native';
 import React, { Component, PropTypes } from 'react';
-
-import { Avatar, Card, ListItem, Toolbar } from 'react-native-material-ui';
+import { Avatar } from "react-native-elements";
+import { Card, ListItem, Toolbar } from '../react-native-material-ui/src';
 import Container from '../Container';
 
 const styles = StyleSheet.create({
@@ -9,6 +9,13 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         paddingBottom: 16,
     },
+    imageContainer: {
+      paddingVertical: 20,
+      flex: 1,
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+    }
 });
 
 const propTypes = {
@@ -17,6 +24,14 @@ const propTypes = {
 };
 
 class DetailSpec extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            user: this.props.route.user,
+        };
+    }
+
     componentWillMount() {
         BackHandler.addEventListener('hardwareBackPress', this.backPressed);
     }
@@ -30,26 +45,32 @@ class DetailSpec extends Component {
         return true;
     }
 
+    capitalizeFirstLetter = (string) => {
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
     render() {
         return (
             <Container>
                 <Toolbar
                     leftElement="arrow-back"
                     onLeftElementPress={() => this.props.navigator.pop()}
-                    centerElement={this.props.route.title}
-                    searchable={{
-                        autoFocus: true,
-                        placeholder: 'Search',
-                        onChangeText: value => this.setState({ searchText: value }),
-                        onSearchClosed: () => this.setState({ searchText: '' }),
-                    }}
+                    centerElement={this.capitalizeFirstLetter(this.state.user.name.first)}
                 />
+                <ScrollView>
+                <View style={styles.imageContainer}>
+                  <Avatar
+                    xlarge
+                    rounded
+                    source={{uri: `${this.state.user.picture.large}`}}
+                    activeOpacity={0.7}
+                  />
+                </View>
                 <Card>
                     <ListItem
-                        leftElement={<Avatar text="JM" />}
                         centerElement={{
-                            primaryText: 'John Mitri',
-                            secondaryText: '3 weeks ago',
+                            primaryText: `${this.capitalizeFirstLetter(this.state.user.name.title)}. ${this.capitalizeFirstLetter(this.state.user.name.first)} ${this.capitalizeFirstLetter(this.state.user.name.last)}`,
+                            secondaryText: `${this.capitalizeFirstLetter(this.state.user.location.street)}, ${this.capitalizeFirstLetter(this.state.user.location.city)}, ${this.capitalizeFirstLetter(this.state.user.location.state)}`,
                         }}
                     />
                     <View style={styles.textContainer}>
@@ -63,10 +84,9 @@ class DetailSpec extends Component {
                 </Card>
                 <Card>
                     <ListItem
-                        leftElement={<Avatar text="MW" />}
                         centerElement={{
-                            primaryText: 'Mike Wiliams',
-                            secondaryText: '4 weeks ago',
+                            primaryText: `${this.state.user.login.username}`,
+                            secondaryText: `${this.state.user.email}`,
                         }}
                     />
                     <View style={styles.textContainer}>
@@ -78,6 +98,8 @@ class DetailSpec extends Component {
                         </Text>
                     </View>
                 </Card>
+                </ScrollView>
+
             </Container>
         );
     }
