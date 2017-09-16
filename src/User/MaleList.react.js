@@ -1,9 +1,15 @@
-import React, { Component } from "react";
-import { View, Text, FlatList, ActivityIndicator, StyleSheet, RefreshControl } from "react-native";
-import { List, SearchBar } from "react-native-elements";
-import { ListItem } from 'react-native-material-ui/src';
+import React, { Component, PropTypes } from "react";
+import { View, Text, FlatList, ActivityIndicator, StyleSheet, RefreshControl, Alert } from "react-native";
+import { List, SearchBar, Avatar } from "react-native-elements";
+import { ListItem } from 'react-native-material-ui';
+import routes from '../routes';
 
-class UserList extends Component {
+const propTypes = {
+    navigator: PropTypes.object.isRequired,
+    route: PropTypes.object.isRequired,
+};
+
+class MaleList extends Component {
   constructor(props) {
     super(props);
 
@@ -13,6 +19,7 @@ class UserList extends Component {
       page: 1,
       seed: 1,
       error: null,
+      visible: false,
       refreshing: false
     };
   }
@@ -23,7 +30,7 @@ class UserList extends Component {
 
   makeRemoteRequest = () => {
     const { page, seed } = this.state;
-    const url = 'https://randomuser.me/api/?results=10&nat=us';
+    const url = 'https://randomuser.me/api/?results=10&nat=us&gender=male';
     this.setState({ loading: true });
 
     fetch(url)
@@ -69,7 +76,7 @@ class UserList extends Component {
     return (
       <View
         style={{
-          height: 1,
+          height: 0.5,
           width: "86%",
           backgroundColor: "#CED0CE",
           marginLeft: "14%"
@@ -94,6 +101,10 @@ class UserList extends Component {
     );
   };
 
+  onAvatarPressed = (item) => {
+    Alert.alert( this.capitalizeFirstLetter(`${item.name.first}:`), 'Hello! Take a look at my profile.', [{text: 'OK', onPress: () => console.log('OK Pressed')}], { cancelable: false } )
+  };
+
   capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
@@ -105,16 +116,25 @@ class UserList extends Component {
           data={this.state.data}
           renderItem={({ item }) => (
             <ListItem
-                leftElement="person"
-                onPress={() => {}}
-                centerElement={{
-                    primaryText: this.capitalizeFirstLetter(`${item.name.first}`) + ` `+ this.capitalizeFirstLetter(`${item.name.last}`),
-                    secondaryText: `${item.login.username}`,
-                }}
+              style={{ leftElementContainer: { width: 50 }}}
+              divider
+              centerElement={{
+                  primaryText: this.capitalizeFirstLetter(`${item.name.first}`) + ` `+ this.capitalizeFirstLetter(`${item.name.last}`),
+                  secondaryText: `${item.login.username}`,
+              }}
+              leftElement= {
+                <Avatar
+                  medium
+                  rounded
+                  source={{uri: `${item.picture.medium}`}}
+                  activeOpacity={0.7}
+                />
+              }
+              onLeftElementPress={() => this.onAvatarPressed(item)}
+              onPress={() => this.props.navigator.push(routes.userDetail)}
             />
           )}
           keyExtractor={item => item.email}
-          ItemSeparatorComponent={this.renderSeparator}
           ListFooterComponent={this.renderFooter}
           refreshControl={
             <RefreshControl
@@ -135,4 +155,6 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UserList;
+MaleList.propTypes = propTypes;
+
+export default MaleList;

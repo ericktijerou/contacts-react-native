@@ -1,13 +1,13 @@
 import Home from './App/Home.react';
-import Detail from './Detail';
+import UserDetail from './UserDetail';
 
 export default {
     home: {
         title: 'Contacts',
         Page: Home,
     },
-    detail: {
+    userDetail: {
         title: 'Details',
-        Page: Detail,
+        Page: UserDetail,
     },
 };

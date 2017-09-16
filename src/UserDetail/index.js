@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, BackHandler } from 'react-native';
 import React, { Component, PropTypes } from 'react';
 
 import { Avatar, Card, ListItem, Toolbar } from 'react-native-material-ui';
@@ -17,6 +17,19 @@ const propTypes = {
 };
 
 class DetailSpec extends Component {
+    componentWillMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.backPressed);
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.backPressed);
+    }
+
+    backPressed = () => {
+        this.props.navigator.pop();
+        return true;
+    }
+
     render() {
         return (
             <Container>

@@ -5,7 +5,8 @@ import { TabViewAnimated, TabBar, SceneMap, TabViewPage } from 'react-native-tab
 import routes from '../routes';
 
 import Container from '../Container';
-import UserList from '../User/UserList.react';
+import MaleList from '../User/MaleList.react';
+import FemaleList from '../User/FemaleList.react';
 
 // components
 import {
@@ -14,7 +15,7 @@ import {
     ListItem,
     Toolbar,
     Icon,
-} from 'react-native-material-ui/src';
+} from 'react-native-material-ui';
 
 const propTypes = {
     navigator: PropTypes.object.isRequired,
@@ -24,8 +25,6 @@ const propTypes = {
 const contextTypes = {
     uiTheme: PropTypes.object.isRequired,
 };
-
-const FirstRoute = () => <UserList style={styles.container}/>;
 
 class Home extends Component {
     constructor(props) {
@@ -47,21 +46,7 @@ class Home extends Component {
             moveAnimated: new Animated.Value(0),
         };
     }
-    onAvatarPressed = (value) => {
-        const { selected } = this.state;
 
-        const index = selected.indexOf(value);
-
-        if (index >= 0) {
-            // remove item
-            selected.splice(index, 1);
-        } else {
-            // add item
-            selected.push(value);
-        }
-
-        this.setState({ selected });
-    }
     show = () => {
         Animated.timing(this.state.moveAnimated, {
             toValue: 0,
@@ -119,8 +104,8 @@ class Home extends Component {
 
 
     _renderScene = SceneMap({
-       '1': FirstRoute,
-       '2': FirstRoute,
+       '1': () => <MaleList route={this.props.route} navigator={this.props.navigator} style={styles.container}/>,
+       '2': () => <FemaleList route={this.props.route} navigator={this.props.navigator} style={styles.container}/>,
      });
 
 
