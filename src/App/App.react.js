@@ -10,7 +10,7 @@ const UIManager = NativeModules.UIManager;
 
 const uiTheme = {
     palette: {
-        primaryColor: COLOR.teal800,
+        primaryColor: COLOR.teal600,
         accentColor: COLOR.green500,
     },
 };
@@ -22,8 +22,8 @@ class App extends Component {
     static renderScene(route, navigator) {
         return (
             <Container>
-                <StatusBar backgroundColor= {COLOR.teal900} translucent />
-                <View style={{ backgroundColor: COLOR.teal800, height: 24 }} />
+                <StatusBar backgroundColor= {COLOR.teal800} translucent />
+                <View style={{ backgroundColor: COLOR.teal600, height: 24 }} />
                 <route.Page
                     route={route}
                     navigator={navigator}

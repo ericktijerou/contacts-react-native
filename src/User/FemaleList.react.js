@@ -137,6 +137,7 @@ class FemaleList extends Component {
                   rounded
                   source={{uri: `${item.picture.medium}`}}
                   activeOpacity={0.7}
+                  onPress={() => this.onAvatarPressed(item)}
                 />
               }
               onLeftElementPress={() => this.onAvatarPressed(item)}

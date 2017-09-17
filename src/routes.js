@@ -3,7 +3,7 @@ import UserDetail from './UserDetail';
 
 export default {
     home: {
-        title: 'Contacts',
+        title: 'RandomUser',
         Page: Home,
     },
     userDetail: {
